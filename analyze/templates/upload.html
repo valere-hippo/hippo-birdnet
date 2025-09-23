@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>BirdNET HIPPO Analyse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f7f8;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #AE5959;
+            text-align: center;
+        }
+        h2 {
+            color: #2c3e50;
+        }
+        form {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="file"] {
+            margin-bottom: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #AE5959;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #AE5959;
+        }
+        .logo-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            height: 60px;
+        }
+
+        .left-logo {
+            margin-right: auto;
+            border-radius: 50px;
+        }
+
+        .right-logo {
+            margin-left: auto;
+        }
+        #loader {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #AE5959;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="{% static 'img/birdnet_logo.png' %}" alt="BirdNET Logo" class="logo left-logo">
+        <h1>HIPPOSIDEROS - BirdNET</h1>
+        <img src="{% static 'img/hipposideros_logo.png' %}" alt="Hipposideros Logo" class="logo right-logo">
+    </div>
+
+    <h2>Audiodateien hochladen</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="audio" multiple required><br>
+        <button type="submit">Analysieren</button>
+    </form>
+
+    <div id="loader" style="display: none;">
+        <div class="spinner"></div>
+        <p>Analyse läuft, bitte warten...</p>
+    </div>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+</body>
+<script>
+    document.querySelector("form").addEventListener("submit", function () {
+        document.getElementById("loader").style.display = "block";
+    });
+</script>
+</html>

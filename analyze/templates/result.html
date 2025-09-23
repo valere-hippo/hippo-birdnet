@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Analyse-Ergebnisse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eef3f7;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #AE5959;
+            text-align: center;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 40px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 30px;
+            background-color: white;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #AE5959;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #AE5959;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-btn:hover {
+            background-color: #AE5959;
+        }
+        .logo-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            height: 60px;
+        }
+
+        .left-logo {
+            margin-right: auto;
+            border-radius: 50px;
+        }
+
+        .right-logo {
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo-container">
+        <img src="{% static 'img/birdnet_logo.png' %}" alt="BirdNET Logo" class="logo left-logo">
+        <h1>HIPPOSIDEROS - BirdNET</h1>
+        <img src="{% static 'img/hipposideros_logo.png' %}" alt="Hipposideros Logo" class="logo right-logo">
+    </div>
+
+    {% for file_result in results %}
+        <h2>Ergebnisse für: {{ file_result.name }}</h2>
+
+        {% if file_result.data %}
+            <table>
+                <thead>
+                    <tr>
+                        {% for key in file_result.data.0.keys %}
+                            <th>{{ key }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in file_result.data %}
+                        <tr>
+                            {% for value in row.values %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Keine Erkennung.</p>
+        {% endif %}
+    {% endfor %}
+
+    <br><br>
+<div style="text-align: center;">
+    <a href="/" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">
+        Zurück zur Startseite
+    </a>
+</div>
+
+<div style="text-align: center; margin-top: 20px;">
+    <a href="{% url 'export_excel' %}" style="padding: 10px 20px; background-color: #e67e22; color: white; text-decoration: none; border-radius: 5px;">
+        Ergebnisse als Excel herunterladen
+    </a>
+</div>
+
+
+</body>
+</html>

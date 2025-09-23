@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>BirdNET API Ergebnisse</title>
+</head>
+<body>
+    <h2>Ergebnisse von BirdNET API für: {{ audio.audio.name }}</h2>
+
+    {% if result %}
+        <p><strong>Art:</strong> {{ result.species }}</p>
+        <p><strong>Konfidenz:</strong> {{ result.confidence }}</p>
+        <p><strong>Ort:</strong> {{ result.location }}</p>
+        <p><strong>Zeit:</strong> {{ result.datetime }}</p>
+    {% else %}
+        <p>Keine Erkennung.</p>
+    {% endif %}
+</body>
+</html>
