@@ -68,6 +68,30 @@
         .right-logo {
             margin-left: auto;
         }
+
+        .media-section {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .spectrogram {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+        }
+
+        .download-link {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            color: #2980b9;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -103,21 +127,39 @@
         {% else %}
             <p>Keine Erkennung.</p>
         {% endif %}
+
+        <div class="media-section">
+            {% if file_result.audio_url %}
+                <p><strong>🎧 Audio-Wiedergabe:</strong></p>
+                <audio controls>
+                    <source src="{{ file_result.audio_url }}" type="audio/wav">
+                    Ihr Browser unterstützt das Audio-Element nicht.
+                </audio>
+            {% endif %}
+
+            {% if file_result.spectrogram %}
+                <p><strong>📊 Spektrogramm:</strong></p>
+                <img src="/{{ file_result.spectrogram }}" alt="Spektrogramm" class="spectrogram">
+                <a href="/{{ file_result.spectrogram }}" download class="download-link">⬇ Spektrogramm herunterladen</a>
+                <p style="font-size: 14px; color: #555; margin-top: 5px;">
+                    <strong>Legende:</strong> Die horizontale Achse zeigt die Zeit (Sekunden), die vertikale Achse die Frequenz (Hertz).
+                    Die Farbskala stellt die Intensität dar – je heller, desto lauter.
+                </p>
+
+            {% endif %}
+        </div>
     {% endfor %}
 
     <br><br>
-<div style="text-align: center;">
-    <a href="/" style="padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">
-        Zurück zur Startseite
-    </a>
-</div>
+    <div style="text-align: center;">
+        <a href="/" class="back-btn">Zurück zur Startseite</a>
+    </div>
 
-<div style="text-align: center; margin-top: 20px;">
-    <a href="{% url 'export_excel' %}" style="padding: 10px 20px; background-color: #e67e22; color: white; text-decoration: none; border-radius: 5px;">
-        Ergebnisse als Excel herunterladen
-    </a>
-</div>
-
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'export_excel' %}" style="padding: 10px 20px; background-color: #e67e22; color: white; text-decoration: none; border-radius: 5px;">
+            Ergebnisse als Excel herunterladen
+        </a>
+    </div>
 
 </body>
 </html>
